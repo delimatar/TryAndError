@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Client" max_length="40" name="x_276349_tryanderr_client" type="collection">
+        <element display="true" label="ClientId" max_length="40" name="clientid" type="string_full_utf8"/>
+    </element>
+</database>
