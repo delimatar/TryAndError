@@ -2,5 +2,8 @@
     <element label="Client" max_length="40" name="x_276349_tryanderr_client" type="collection">
         <element label="ClientId" max_length="40" name="clientid" type="string_full_utf8"/>
         <element display="true" label="headquarters" max_length="40" name="headquarters" type="string_full_utf8"/>
+        <index name="index">
+            <element name="clientid"/>
+        </index>
     </element>
 </database>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_index">
+    <sys_index action="INSERT_OR_UPDATE">
+        <col_name_string>clientid</col_name_string>
+        <index_col_name element="clientid" name="x_276349_tryanderr_client">4c9a8b014fdd23003380a7d18110c73a</index_col_name>
+        <logical_table_name>x_276349_tryanderr_client</logical_table_name>
+        <sys_class_name>sys_index</sys_class_name>
+        <sys_created_by>system</sys_created_by>
+        <sys_created_on>2018-10-21 17:11:27</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>642fe82d4fd963003380a7d18110c7db</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_276349_tryanderr_client</sys_name>
+        <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
+        <sys_update_name>sys_index_x_276349_tryanderr_client_clientid</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2018-10-21 17:11:27</sys_updated_on>
+        <table display_value="Client" name="x_276349_tryanderr_client">4bd903c14fdd23003380a7d18110c794</table>
+        <unique_index>true</unique_index>
+    </sys_index>
+</record_update>

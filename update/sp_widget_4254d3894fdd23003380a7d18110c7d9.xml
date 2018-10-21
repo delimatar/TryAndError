@@ -38,15 +38,14 @@ color: #428bca;
         <public>true</public>
         <roles/>
         <script><![CDATA[(function() {	
-	var results =  [];
 	var headquarters = 'Unknown';
   var gr = new GlideRecord('x_276349_tryanderr_client');
 	if (input) {
-		if(gr.get('ClientId', input.clientId)) {
-			headquarters = gr.headquarters;
-		} else {
-			headquarters = 'Unknown';
+	
+		if(gr.get('clientId', input.clientId)) {
+			headquarters = gr.getValue('headquarters');
 		}
+		
 		data.location = (input.clientId.length > 0) ? "Headquarter of " + input.clientId + " is in " + headquarters : "";
   }
 })();]]></script>
@@ -56,7 +55,7 @@ color: #428bca;
         <sys_created_on>2018-10-20 15:56:18</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>4254d3894fdd23003380a7d18110c7d9</sys_id>
-        <sys_mod_count>32</sys_mod_count>
+        <sys_mod_count>57</sys_mod_count>
         <sys_name>HelloWidget</sys_name>
         <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
         <sys_policy/>
@@ -64,7 +63,7 @@ color: #428bca;
         <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
         <sys_update_name>sp_widget_4254d3894fdd23003380a7d18110c7d9</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-21 17:07:47</sys_updated_on>
+        <sys_updated_on>2018-10-21 17:51:27</sys_updated_on>
         <template><![CDATA[<div>
  Enter your clientId:
  <input type="text" ng-model="c.data.clientId" ng-model-options="{debounce: 50}" ng-change="c.display()"/>
