@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message">
+    <sys_rest_message action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <authentication_type>basic</authentication_type>
+        <basic_auth_password/>
+        <basic_auth_profile display_value="Infoblox">62d363c0cb210200e5243682634c9c4e</basic_auth_profile>
+        <basic_auth_user/>
+        <description>Echo</description>
+        <name>Echo</name>
+        <oauth2_profile/>
+        <protocol_name/>
+        <rest_endpoint>https://dev34654.service-now.com/api/x_276349_tryanderr/echo/${firstName}</rest_endpoint>
+        <sys_class_name>sys_rest_message</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-11-04 16:55:05</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>4191304e4f2523003380a7d18110c7a4</sys_id>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name>Echo</sys_name>
+        <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
+        <sys_update_name>sys_rest_message_4191304e4f2523003380a7d18110c7a4</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-11-05 09:04:19</sys_updated_on>
+        <use_basic_auth>false</use_basic_auth>
+        <use_mutual_auth>false</use_mutual_auth>
+    </sys_rest_message>
+</record_update>

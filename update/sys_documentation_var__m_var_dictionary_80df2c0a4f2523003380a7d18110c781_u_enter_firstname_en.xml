@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_enter_firstname" label="Enter FirstName" language="en" table="var__m_var_dictionary_80df2c0a4f2523003380a7d18110c781">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_enter_firstname</element>
+            <help/>
+            <hint/>
+            <label>Enter FirstName</label>
+            <language>en</language>
+            <name>var__m_var_dictionary_80df2c0a4f2523003380a7d18110c781</name>
+            <plural>Enter FirstName</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-11-05 11:54:36</sys_created_on>
+            <sys_customer_update>false</sys_customer_update>
+            <sys_id>157678124fa123003380a7d18110c785</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Enter FirstName</sys_name>
+            <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
+            <sys_update_name>sys_documentation_var__m_var_dictionary_80df2c0a4f2523003380a7d18110c781_u_enter_firstname_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-11-05 11:54:36</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

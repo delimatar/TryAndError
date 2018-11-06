@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_fn">
+    <sys_rest_message_fn action="INSERT_OR_UPDATE">
+        <authentication_type>inherit_from_parent</authentication_type>
+        <basic_auth_password/>
+        <basic_auth_profile display_value="F5 basic auth">f4eeb1c17f210200b547b8038dfa91fb</basic_auth_profile>
+        <basic_auth_user/>
+        <content/>
+        <function_name>GETEcho</function_name>
+        <http_method>get</http_method>
+        <lock>false</lock>
+        <oauth2_profile/>
+        <protocol_name/>
+        <qualified_name>Echo [ GETEcho ]</qualified_name>
+        <rest_endpoint>https://dev34654.service-now.com/api/x_276349_tryanderr/echo/${firstName}</rest_endpoint>
+        <rest_message display_value="Echo">4191304e4f2523003380a7d18110c7a4</rest_message>
+        <sys_class_name>sys_rest_message_fn</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-11-04 16:55:05</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>dda1bc0e4f2523003380a7d18110c745</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>GETEcho</sys_name>
+        <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
+        <sys_update_name>sys_rest_message_fn_dda1bc0e4f2523003380a7d18110c745</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-11-05 09:03:50</sys_updated_on>
+        <use_basic_auth>false</use_basic_auth>
+        <use_mid_server/>
+        <use_mutual_auth>false</use_mutual_auth>
+    </sys_rest_message_fn>
+</record_update>

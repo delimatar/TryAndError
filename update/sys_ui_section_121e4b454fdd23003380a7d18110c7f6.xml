@@ -4,13 +4,13 @@
             <element>clientid</element>
             <position>0</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2018-10-20 15:29:01</sys_created_on>
-            <sys_id>1a1e4b454fdd23003380a7d18110c7fc</sys_id>
+            <sys_created_on>2018-11-05 09:44:10</sys_created_on>
+            <sys_id>7e98d4de4f2123003380a7d18110c764</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_276349_tryanderr_client" sys_domain="global" view="Default view">121e4b454fdd23003380a7d18110c7f6</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-10-20 15:29:01</sys_updated_on>
+            <sys_updated_on>2018-11-05 09:44:10</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -18,15 +18,29 @@
             <element>headquarters</element>
             <position>1</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2018-10-21 15:34:58</sys_created_on>
-            <sys_id>8b0918ed4f9963003380a7d18110c7b7</sys_id>
+            <sys_created_on>2018-11-05 09:44:10</sys_created_on>
+            <sys_id>3698d4de4f2123003380a7d18110c765</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_276349_tryanderr_client" sys_domain="global" view="Default view">121e4b454fdd23003380a7d18110c7f6</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-10-21 15:34:58</sys_updated_on>
+            <sys_updated_on>2018-11-05 09:44:10</sys_updated_on>
             <sys_user/>
             <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>2</position>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-11-05 09:44:10</sys_created_on>
+            <sys_id>b698d4de4f2123003380a7d18110c765</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_276349_tryanderr_client" sys_domain="global" view="Default view">121e4b454fdd23003380a7d18110c7f6</sys_ui_section>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-11-05 09:44:10</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
         </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
