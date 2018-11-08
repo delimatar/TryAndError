@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="ClientCatalogItem" max_length="40" name="x_276349_tryanderr_richard_delimata" type="collection">
+        <element label="catalogItemId" max_length="32" name="catalogitemid" reference="sc_cat_item" type="reference"/>
+        <element label="clientId" max_length="32" name="clientid" reference="x_276349_tryanderr_client" type="reference"/>
+        <element label="price" max_length="20" name="price" type="decimal"/>
+        <index name="index">
+            <element name="clientid"/>
+        </index>
+        <index name="index2">
+            <element name="catalogitemid"/>
+        </index>
+    </element>
+</database>

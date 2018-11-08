@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_documentation element="headquarters" label="headquarters" language="en" table="x_276349_tryanderr_client">
+    <sys_documentation element="" label="ClientCatalogItem" language="en" table="x_276349_tryanderr_richard_delimata">
         <sys_documentation action="INSERT_OR_UPDATE">
-            <element>headquarters</element>
+            <element/>
             <help/>
             <hint/>
-            <label>headquarters</label>
+            <label>ClientCatalogItem</label>
             <language>en</language>
-            <name>x_276349_tryanderr_client</name>
-            <plural>headquarters</plural>
+            <name>x_276349_tryanderr_richard_delimata</name>
+            <plural>ClientCatalogItems</plural>
             <sys_class_name>sys_documentation</sys_class_name>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2018-10-21 15:34:58</sys_created_on>
+            <sys_created_on>2018-11-08 13:36:46</sys_created_on>
             <sys_customer_update>false</sys_customer_update>
-            <sys_id>970918ed4f9963003380a7d18110c7d0</sys_id>
-            <sys_mod_count>1</sys_mod_count>
-            <sys_name>headquarters</sys_name>
+            <sys_id>079aac974f6123003380a7d18110c773</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>ClientCatalogItem</sys_name>
             <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
             <sys_policy/>
             <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
             <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
-            <sys_update_name>sys_documentation_x_276349_tryanderr_client_headquarters_en</sys_update_name>
+            <sys_update_name>sys_documentation_x_276349_tryanderr_richard_delimata__en</sys_update_name>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-11-08 13:39:43</sys_updated_on>
+            <sys_updated_on>2018-11-08 13:36:46</sys_updated_on>
             <url/>
             <url_target/>
         </sys_documentation>
