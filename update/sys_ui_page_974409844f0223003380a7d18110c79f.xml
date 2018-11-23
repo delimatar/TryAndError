@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[  // create an array with nodes
+  var nodes = new vis.DataSet([
+    {id: 1, label: 'Node 1'},
+    {id: 2, label: 'Node 2'},
+    {id: 3, label: 'Node 3'},
+    {id: 4, label: 'Node 4'},
+    {id: 5, label: 'Node 5'}
+  ]);
+
+  // create an array with edges
+  var edges = new vis.DataSet([
+    {from: 1, to: 3},
+    {from: 1, to: 2},
+    {from: 2, to: 4},
+    {from: 2, to: 5},
+    {from: 3, to: 3}
+  ]);
+
+   var options = {
+    };
+
+  // create a network
+  var container = document.getElementById('mynetwork');
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+  var options = {};
+  var network = new vis.Network(container, data, options);]]></client_script>
+        <description>My EUD Application</description>
+        <direct>false</direct>
+        <endpoint>x_276349_tryanderr_myEUDApp.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="x_276349_tryanderr.angular_app_client_lo.jsdbx"></script>
+	<script src="x_276349_tryanderr.visminjs.jsdbx"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
+	
+<style type="text/css">
+    #mynetwork {
+      width: 1000px;
+      height: 640px;
+      border: 1px solid lightgray;
+    }
+</style>
+
+	<div ng-app="angularapp" ng-controller="AngularAppCtrl as appctrl">
+		<input type="text" ng-model="myVar" placeholder="Enter some text here"></input>
+		<p></p>
+		<div class ="jumbotron">
+			<h1 class="display-3">Hello world!</h1>
+			<hr class="m-y-2"/>
+			<p>{{myVar}}</p>
+		</div>	
+		<button ng-click="clearTxt()" type="btn btn-primary">Clear Text</button>
+		<div id="mynetwork"></div>
+	</div>		
+</j:jelly>
+
+]]></html>
+        <name>myEUDApp</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-11-23 09:43:39</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>974409844f0223003380a7d18110c79f</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>myEUDApp</sys_name>
+        <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
+        <sys_update_name>sys_ui_page_974409844f0223003380a7d18110c79f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-11-23 15:32:43</sys_updated_on>
+    </sys_ui_page>
+</record_update>
