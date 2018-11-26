@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="CatalogServiceConsolidation" max_length="40" name="x_276349_tryanderr_catalogserviceconsolidation" type="collection">
+        <element label="Action" max_length="60" name="action" type="string_full_utf8"/>
+        <element label="Class" max_length="20" name="class" type="string_full_utf8"/>
+        <element label="Complexity" max_length="10" name="complexity" type="string_full_utf8"/>
+        <element label="Description" max_length="4000" name="description" type="string_full_utf8"/>
+        <element label="Group" max_length="40" name="group" type="string_full_utf8"/>
+        <element label="Id" max_length="20" name="id" type="string_full_utf8"/>
+        <element label="InScope" max_length="20" name="inscope" type="string_full_utf8"/>
+        <element label="Item" max_length="200" name="item" type="string_full_utf8"/>
+        <element label="Level" max_length="40" name="level" type="integer"/>
+        <element label="Origin" max_length="10" name="origin" type="string_full_utf8"/>
+        <element label="Type" max_length="40" name="type" type="string_full_utf8"/>
+        <element label="Variant" max_length="60" name="variant" type="string_full_utf8"/>
+        <element label="VariantGroup" max_length="20" name="variantgroup" type="string_full_utf8"/>
+    </element>
+</database>

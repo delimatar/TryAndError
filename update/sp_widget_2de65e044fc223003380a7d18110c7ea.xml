@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[function visTest() {
-  /* widget controller */
+        <client_script><![CDATA[function() {
   var c = this;
-	
+
 	  var nodes = new vis.DataSet([
-    {id: 1, label: 'Node 1'},
-    {id: 2, label: 'Node 2'},
-    {id: 3, label: 'Node 3'},
-    {id: 4, label: 'Node 4'},
-    {id: 5, label: 'Node 5'}
   ]);
 
   // create an array with edges
   var edges = new vis.DataSet([
-    {from: 1, to: 3},
-    {from: 1, to: 2},
-    {from: 2, to: 4},
-    {from: 2, to: 5},
-    {from: 3, to: 3}
   ]);
+	
   // create a network
   var container = document.getElementById('mynetwork');
-  var data = {
+  var data1 = {
     nodes: nodes,
     edges: edges
   };
-  var options = {};
-  var network = new vis.Network(container, data, options);
+	
+	this.server.update().then(function(data) {
+		for(var i=0;i<data.sci.length;i++) {
+		var item = {id: 6+i, label: data.sci[i]};
+		var line  = {from: 6+i, to: 6+i};			
+
+		nodes.add(item);
+		edges.add(line);
+		}
+		var options = {};
+    var network = new vis.Network(container, data1, options);
+	});
+
 }
 
-visTest();
 
 ]]></client_script>
         <controller_as>c</controller_as>
@@ -45,7 +45,7 @@ visTest();
         <description/>
         <docs/>
         <field_list/>
-        <has_preview>false</has_preview>
+        <has_preview>true</has_preview>
         <id>visexample</id>
         <internal>false</internal>
         <link/>
@@ -53,14 +53,25 @@ visTest();
         <option_schema/>
         <public>false</public>
         <roles/>
-        <script><![CDATA[(function() {  /* populate the 'data' object */  /* e.g., data.table = $sp.getValue('table'); */})();]]></script>
+        <script><![CDATA[(function () {	
+  var gr = new GlideRecord('x_276349_tryanderr_catalogserviceconsolidation');
+
+	var sci = [];
+	var i=0;
+	gr.query();
+	while (gr.next()) {
+		sci[i] =gr.getValue('id');
+		i=i+1;
+	}
+	data.sci = sci;
+})();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-11-23 15:41:01</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>2de65e044fc223003380a7d18110c7ea</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>48</sys_mod_count>
         <sys_name>VisExample</sys_name>
         <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
         <sys_policy/>
@@ -68,7 +79,7 @@ visTest();
         <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
         <sys_update_name>sp_widget_2de65e044fc223003380a7d18110c7ea</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-23 16:16:53</sys_updated_on>
+        <sys_updated_on>2018-11-24 17:46:04</sys_updated_on>
         <template><![CDATA[<script src="x_276349_tryanderr.visminjs.jsdbx"></script>
 <div ng-app="">
 		<div id="mynetwork"></div>
