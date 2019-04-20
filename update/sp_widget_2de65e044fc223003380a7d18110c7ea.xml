@@ -19,17 +19,14 @@
   };
 	
 	this.server.update().then(function(data) {
-		for(var i=0;i<data.sci.length;i++) {
-		var item = {id: 6+i, label: data.sci[i]};
-		var line  = {from: 6+i, to: 6+i};			
-
-		nodes.add(item);
-		edges.add(line);
-		}
-		var options = {};
+		nodes.add(data.nodes);
+		edges.add(data.edges); 
+		
+    var options = {
+    };
+		
     var network = new vis.Network(container, data1, options);
 	});
-
 }
 
 
@@ -54,16 +51,99 @@
         <public>false</public>
         <roles/>
         <script><![CDATA[(function () {	
-  var gr = new GlideRecord('x_276349_tryanderr_catalogserviceconsolidation');
-
-	var sci = [];
-	var i=0;
-	gr.query();
-	while (gr.next()) {
-		sci[i] =gr.getValue('id');
-		i=i+1;
+	var nodes = [];
+	var node = '';
+	var edges = [];
+	var edge = '';
+	var group = '';	
+	var type = '';	
+	var items = [];
+	
+	var nodeCounter=0;
+	var edgeCounter=0;
+	
+	var grItem = new GlideAggregate('x_276349_tryanderr_catalogserviceconsolidation');
+	grItem.groupBy('item');
+	grItem.query();
+		
+	while (grItem.next()) {  
+		item = {id: nodeCounter, label: grItem.getValue('item')};
+		node = {id: nodeCounter, label: item.label};
+		nodes.push(node);
+		items.push(item);
+		
+		nodeCounter=nodeCounter+1;
+	}	
+	
+  var grGroup = new GlideAggregate('x_276349_tryanderr_catalogserviceconsolidation');
+	grGroup.groupBy('group');
+	grGroup.query();
+	
+	while (grGroup.next()) {
+		group = {id: nodeCounter, label: grGroup.getValue('group')};
+		node = {id: group.id, label: group.label};
+		nodes.push(node);
+		nodeCounter=nodeCounter+1;
+		
+		var grType = new GlideAggregate('x_276349_tryanderr_catalogserviceconsolidation');
+		grType.groupBy('type');
+    grType.addQuery('group', group.label); 
+		grType.query();
+		
+		while (grType.next()) {
+			type = {id: nodeCounter, label: grType.getValue('type')};
+			node = {id: nodeCounter, label: type.label};
+			edge = {from: group.id, to: nodeCounter};
+			nodes.push(node);
+			edges.push(edge);
+			nodeCounter=nodeCounter+1;
+			
+			var grVariant = new GlideAggregate('x_276349_tryanderr_catalogserviceconsolidation');
+			grVariant.groupBy('variant');
+      grVariant.addQuery('group', group.label); 
+			grVariant.addQuery('type', type.label); 
+			grVariant.query();
+		
+			while (grVariant.next()) {  
+				variant = {id: nodeCounter, label: grVariant.getValue('variant')};
+				node = {id: nodeCounter, label: variant.label};
+				edge = {from: type.id, to: nodeCounter};
+				nodes.push(node);
+				edges.push(edge);
+				nodeCounter=nodeCounter+1;
+				
+				var grVariantItem = new GlideAggregate('x_276349_tryanderr_catalogserviceconsolidation');
+				grVariantItem.groupBy('item');
+				grVariantItem.addQuery('group', group.label); 
+			  grVariantItem.addQuery('type', type.label); 
+				grVariantItem.addQuery('variant', variant.label); 
+				grVariantItem.query();
+			
+				var id = -1;	
+				while (grVariantItem.next()) {  
+					id = determineId(grVariantItem.getValue('item'));
+					if(id !== null ) {
+						edge = {from: variant.id, to: id};
+						edges.push(edge);
+					}
+				}	
+	    }	
+	  }	
+	  data.nodes = nodes;
+	  data.edges = edges;
 	}
-	data.sci = sci;
+		
+	function determineId(item) {
+		var id = -1;
+	
+		for(var i=0;i<items.length;i++)  {
+			if(items[i].label.equalsIgnoreCase(item)) {
+				id = items[i].id;
+				break;
+			} 
+		}
+		return id;
+	}   
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
@@ -71,7 +151,7 @@
         <sys_created_on>2018-11-23 15:41:01</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>2de65e044fc223003380a7d18110c7ea</sys_id>
-        <sys_mod_count>48</sys_mod_count>
+        <sys_mod_count>138</sys_mod_count>
         <sys_name>VisExample</sys_name>
         <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
         <sys_policy/>
@@ -79,7 +159,7 @@
         <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
         <sys_update_name>sp_widget_2de65e044fc223003380a7d18110c7ea</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-24 17:46:04</sys_updated_on>
+        <sys_updated_on>2018-11-26 14:53:44</sys_updated_on>
         <template><![CDATA[<script src="x_276349_tryanderr.visminjs.jsdbx"></script>
 <div ng-app="">
 		<div id="mynetwork"></div>

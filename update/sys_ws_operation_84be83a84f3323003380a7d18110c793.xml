@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>Generator</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var requestBody = request.body;
+    var requestString = requestBody.dataString;
+    var hostnameGeneratorRequest = JSON.parse(requestString);
+
+    var area = hostnameGeneratorRequest.area;
+    var deviceType = hostnameGeneratorRequest.deviceType;
+    var site = hostnameGeneratorRequest.site;
+
+    var firstPart = 'H';
+    var secondPart = 'MUC';
+    var thirdPart = randomString(5, "N");
+	
+	gs.info(area);
+	gs.info(deviceType);
+	gs.info(site);
+
+    if (deviceType != null) {
+        switch (deviceType) {
+            case 'laptop':
+                firstPart = 'L';
+                break;
+            case 'Desktop':
+                firstPart = 'D';
+            break;
+            default:
+                firstPart = 'C';
+            break;
+        }
+    }
+
+	gs.info(firstPart);
+	
+    if (site != null) {
+        secondPart = site;
+    }
+    gs.info(secondPart);
+	gs.info(thirdPart);
+    var hostname = "";
+    hostname = hostname.concat(firstPart, secondPart, thirdPart);
+
+    return { "Hostname": hostname };
+})(request, response);
+
+function randomString(len, an){
+    an = an&&an.toLowerCase();
+    var str="", i=0, min=an=="a"?10:0, max=an=="n"?10:62;
+    for(;i++<len;){
+      var r = Math.random()*(max-min)+min <<0;
+      str += String.fromCharCode(r+=r>9?r<36?55:61:48);
+    }
+    return str;
+}]]></operation_script>
+        <operation_uri>/api/x_276349_tryanderr/myeudhostname</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2019-02-20 08:52:03</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>84be83a84f3323003380a7d18110c793</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Generator</sys_name>
+        <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
+        <sys_update_name>sys_ws_operation_84be83a84f3323003380a7d18110c793</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2019-02-20 10:51:39</sys_updated_on>
+        <web_service_definition display_value="MyEUDHostname">569e8b684f3323003380a7d18110c76f</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>
