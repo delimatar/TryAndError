@@ -7,12 +7,12 @@
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
             <sys_id>b9a0f2c44f0623003380a7d18110c766</sys_id>
-            <sys_mod_count>0</sys_mod_count>
+            <sys_mod_count>1</sys_mod_count>
             <sys_overrides/>
             <sys_ui_form display_value="x_276349_tryanderr_catalogserviceconsolidation" name="x_276349_tryanderr_catalogserviceconsolidation" sys_domain="global" view="Default view">b1a072c44f0623003380a7d18110c7d6</sys_ui_form>
-            <sys_ui_section caption="NULL" display_value="" name="x_276349_tryanderr_catalogserviceconsolidation" sys_domain="global" view="Default view">b9a072c44f0623003380a7d18110c7d4</sys_ui_section>
-            <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-11-23 17:33:32</sys_updated_on>
+            <sys_ui_section caption="NULL" display_value="" name="x_276349_tryanderr_catalogserviceconsolidation" sys_domain="global" view="Default view">1dbf2e444f0623003380a7d18110c796</sys_ui_section>
+            <sys_updated_by>system</sys_updated_by>
+            <sys_updated_on>2019-04-23 12:17:26</sys_updated_on>
         </sys_ui_form_section>
         <sys_ui_form_section action="INSERT_OR_UPDATE">
             <position>1</position>
