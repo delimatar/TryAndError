@@ -594,7 +594,12 @@ tbody tr:last-child {
 .dropdown-toggle {
   background: none;
   padding: 0 0 4px 0;
-}</css>
+}
+
+.btn {
+  line-height: 1.5;
+}
+</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -632,17 +637,10 @@ tbody tr:last-child {
 		data.fields = data.field_list;
 	}
 
-
-	//data.clickable_columns_form_view_name = options.clickable_columns_form_view_name ? options.clickable_columns_form_view_name.split(",") : [];
-	//data.clickable_colums = options.clickable_colums ? options.clickable_colums.split(",") : [];
-	//data.enable_column_search = data.enable_column_search || false;
 	data.enable_column_search = true;
-	data.enable_edit_row = data.enable_edit_row || true;
-	data.enable_remove_row = data.enable_remove_row || true;
+	data.enable_edit_row = data.enable_edit_row || false;
+	data.enable_remove_row = data.enable_remove_row || false;
 	
-	
-	data.filter = data.filter || $sp.getValue('filter');
-	//data.keywords = data.keywords || $sp.getValue('keywords');
 	data.p = data.p || $sp.getValue('p') || 1;
 	data.p = parseInt(data.p);
 	data.page_index = data.p - 1;
@@ -653,14 +651,7 @@ tbody tr:last-child {
 		windowSize = 20;
 	data.window_size = windowSize;
 	data.isClickable = [];
-	data.addUser_title = gs.getMessage("Add User");
 
-	var gr;
-	if (gs.getProperty("glide.security.ui.filter") == "true") {
-		gr = new FilteredGlideRecord(data.table);
-		gr.applyRowSecurity();
-	} else
-	
 	gr = new GlideRecord(data.table);
 	if (!gr.isValid()) {
 		data.invalid_table = true;
@@ -669,31 +660,6 @@ tbody tr:last-child {
 	}
 
 	data.canCreate = gr.canCreate();
-	data.newButtonUnsupported = data.table == "sys_attachment";
-	data.table_label = gr.getLabel();
-	//data.table_plural = gr.getPlural();
-	if (data.filter) {
-		if (data.filterACLs) {
-			gr = $sp.addQueryString(gr, data.filter);
-		} else {
-			gr.addEncodedQuery(data.filter);
-		}
-	}
-
-	if (data.keywords) {
-		gr.addQuery('123TEXTQUERY321', data.keywords);
-		data.keywords = null;
-	}
-
-	if (data.relationship_id) {
-		var rel = GlideRelationship.get(data.relationship_id);
-		var target = new GlideRecord(data.table);
-		var applyTo = new GlideRecord(data.apply_to);
-		applyTo.get("sys_id", data.apply_to_sys_id);
-		rel.queryWith(applyTo, target); // put the relationship query into target
-		gr.addEncodedQuery(target.getEncodedQuery()); // get the query the relationship made for us
-	}
-	
 	data.fields_array = data.fields.split(',');
 
 	
@@ -711,7 +677,6 @@ tbody tr:last-child {
 	//Filter data by user input
 
 	if (input.searchObject) {
-		//gs.addInfoMessage(JSON.stringify(input.searchObject))
 		data.querystring = filterRecords(input.searchObject);
 		gr.addEncodedQuery(data.querystring);
 	}
@@ -739,31 +704,12 @@ tbody tr:last-child {
 	data.num_pages = Math.ceil(data.row_count / data.window_size);
 	data.column_labels = {};
 
-	// use GlideRecord to get field labels vs. GlideRecordSecure
-	var grForLabels = new GlideRecord(data.table);
-	for (var i in data.fields_array) {
-		var field = data.fields_array[i];
-		var ge = grForLabels.getElement(field);
-		if (ge == null)
-			continue;
 
-		data.column_labels[field] = ge.getLabel();
-		//if (data.clickable_colums.indexOf(field) >= 0) {
-			//data.isClickable[i] = true;
-		//}
-	}
+	data.column_labels['clientid'] = "Client";
+	data.column_labels['headquarters'] = "Headquarter";
 
-	data.references = {};
-	data.formViews = {};
 	data.list = [];
 	while (gr._next()) {
-		if (!data.references._loaded) {
-			for (var key in data.clickable_colums) {
-				data.references[data.clickable_colums[key]] = gr[data.clickable_colums[key]].getReferenceTable();
-				data.formViews[data.clickable_colums[key]] = data.clickable_columns_form_view_name[key];
-			}
-			data.references._loaded = true;
-		}
 		var record = {};
 		$sp.getRecordElements(record, gr, data.fields);
 		record.sys_id = gr.getValue('sys_id');
@@ -839,7 +785,7 @@ tbody tr:last-child {
         <sys_created_on>2019-04-16 09:08:25</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>26f1e25e4f3033003380a7d18110c7de</sys_id>
-        <sys_mod_count>169</sys_mod_count>
+        <sys_mod_count>196</sys_mod_count>
         <sys_name>MyEUD Generic Table</sys_name>
         <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
         <sys_policy/>
@@ -847,7 +793,7 @@ tbody tr:last-child {
         <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
         <sys_update_name>sp_widget_26f1e25e4f3033003380a7d18110c7de</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2019-04-24 10:24:23</sys_updated_on>
+        <sys_updated_on>2019-04-24 16:06:59</sys_updated_on>
         <template><![CDATA[<!--header-->
 <!-- <pre style="color:black">{{data|json}}</pre> -->
 
