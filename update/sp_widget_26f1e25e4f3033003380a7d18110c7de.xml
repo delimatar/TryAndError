@@ -605,7 +605,7 @@ tbody tr:last-child {
         <internal>false</internal>
         <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
         <name>MyEUD Generic Table</name>
-        <option_schema/>
+        <option_schema>[{"hint":"View Object","name":"viewobject","section":"other","label":"ViewObject","type":"string"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function () {
@@ -613,102 +613,41 @@ tbody tr:last-child {
 	data.msg.sortingByAsc = gs.getMessage("Sorting by ascending");
 	data.msg.sortingByDesc = gs.getMessage("Sorting by descending");
 	
-	/* Possible options and input parameters:
-		Custom options:
-			options: enable_column_search: boolean --> filter for each column in data.fields
-			options: enable_edit_row: boolean --> button for each row, click to edit
-			options: enable_remove_row: boolean --> button for each row, click to remove
-			options: enable_details: boolean --> enables link for each row to redirect to details page
-			options: details_page: string --> id of the details page the details link should link to
-			options: clickable_colums: String (comma sepatared list) --> colums that should be clickable
-		  options: clickable_columns_form_view_name: String (comma separated list) --> Name of the Form View for each Clickable Column
-		Default Data table widget options
-		 * data.table = the table
-		 * data.p = the current page starting at 1
-		 * data.o = the order by column
-		 * data.d = the order by direction
-		 * data.keywords = the keyword search term
-		 * data.list = the table data as an array
-		 * data.invalid_table = true if table is invalid or if data was not succesfully fetched
-		 * data.table_label = the table's display name. e.g. Incident
-		 * data.table_plural = the table's plural display name. e.g. Incidents
-		 * data.fields = a comma delimited list of field names to show in the data table
-		 * data.column_labels = a map of field name -> display name
-		 * data.window_size = the number of rows to show
-		 * data.filter = the encoded query
+	optCopy(['filter', 'p', 'o', 'd']);
 
-		 *******Input Only For embedded widgets*******
-			input: widget_id: string --> helps identify the widget if there are multiple instances on same page
-	 */
-	//optCopy(['table', 'p', 'o', 'd', 'filter', 'filterACLs', 'field_list', 'keywords', 'view']);
-	//optCopy(['enable_column_search', 'enable_edit_row', 'enable_remove_row', 'removeRecord', 'recordRemoved', 'recordID', 'enable_details', 'details_page', 'widget_id', 'noRecords', 'enable_add_user', 'add_user_widget']);
-	//optCopy(['relationship_id', 'apply_to', 'apply_to_sys_id', 'window_size']);
-
-	data.table = "x_276349_tryanderr_client";
+	if (!input) {
+		return;
+	}
 	
-/*
-	var evaluator = new GlideScopedEvaluator();
-	var gr = new GlideRecord( 'x_276349_tryanderr_client');
-	gr.get("clientid", "BMW");
-	gr.setValue( 'headquarters', 'new x_276349_tryanderr.ClientVO();');
-	var clientVO = evaluator.evaluateScript(gr, 'headquarters');
-*/
-	var clientVO = getViewObject('x_276349_tryanderr.ClientVO');
-
+	var murcsUtils = new x_276349_tryanderr.MurcsUtils();
+	var clientVO = murcsUtils.getViewObject(options.viewobject);
 	
 	data.field_list = clientVO.getFieldList();
   data.title = clientVO.getTitle();
 	data.view = clientVO.getViewName();
-
-	clientVO.getListOfObjects();
 	
-	
-	
-	
-	
-	
-	
-	if (!input) {
-		return;
-	}
-
-	if (!data.table) {
-		data.invalid_table = true;
-		data.table_label = "";
-		return;
-	}
+	data.table = "x_276349_tryanderr_client";
 
 	if (data.field_list) {
 		data.fields = data.field_list;
 	}
 
-	if (!data.fields) {
-		if (data.view) {
-			data.fields = $sp.getListColumns(data.table, data.view);
-		}
-		else
-			data.fields = $sp.getListColumns(data.table);
-	}
 
-	data.clickable_columns_form_view_name = options.clickable_columns_form_view_name ? options.clickable_columns_form_view_name.split(",") : [];
-	data.clickable_colums = options.clickable_colums ? options.clickable_colums.split(",") : [];
+	//data.clickable_columns_form_view_name = options.clickable_columns_form_view_name ? options.clickable_columns_form_view_name.split(",") : [];
+	//data.clickable_colums = options.clickable_colums ? options.clickable_colums.split(",") : [];
 	//data.enable_column_search = data.enable_column_search || false;
 	data.enable_column_search = true;
-	data.enable_edit_row = data.enable_edit_row || false;
-	data.enable_remove_row = data.enable_remove_row || false;
-	data.enable_details = data.enable_details || false;
-	data.enable_add_user = data.enable_add_user || false;
-	data.view = data.view || 'mobile';
-	data.table = data.table || $sp.getValue('table');
+	data.enable_edit_row = data.enable_edit_row || true;
+	data.enable_remove_row = data.enable_remove_row || true;
+	
+	
 	data.filter = data.filter || $sp.getValue('filter');
-	data.keywords = data.keywords || $sp.getValue('keywords');
+	//data.keywords = data.keywords || $sp.getValue('keywords');
 	data.p = data.p || $sp.getValue('p') || 1;
 	data.p = parseInt(data.p);
-	data.o = data.o || $sp.getValue('o') || $sp.getValue('order_by');
-	data.d = data.d || $sp.getValue('d') || $sp.getValue('order_direction');
 	data.page_index = data.p - 1;
-	data.show_new = data.show_new || options.show_new;
-	var windowSize = data.window_size || $sp.getValue('maximum_entries') || 20;
+	data.show_new = data.show_new || options.show_new || true;
+	var windowSize = data.window_size || $sp.getValue('maximum_entries') || 5;
 	windowSize = parseInt(windowSize);
 	if (isNaN(windowSize) || windowSize < 1)
 		windowSize = 20;
@@ -809,9 +748,9 @@ tbody tr:last-child {
 			continue;
 
 		data.column_labels[field] = ge.getLabel();
-		if (data.clickable_colums.indexOf(field) >= 0) {
-			data.isClickable[i] = true;
-		}
+		//if (data.clickable_colums.indexOf(field) >= 0) {
+			//data.isClickable[i] = true;
+		//}
 	}
 
 	data.references = {};
@@ -836,15 +775,6 @@ tbody tr:last-child {
 		data.row_count = 0;
 		data.num_page = 0;
 	}
-
-	//data.enable_filter = (input.enable_filter == "true" || options.enable_filter == "true");
-	data.enable_filter = true;
-	var breadcrumbWidgetParams = {
-		table: data.table,
-		query: data.filter,
-		enable_filter: data.enable_filter
-	};
-	data.filterBreadcrumbs = $sp.getWidget('widget-filter-breadcrumbs', breadcrumbWidgetParams);
 
 	//build the final query string for the export function
 	data.exportFilter = buildExportFilter();
@@ -901,16 +831,7 @@ tbody tr:last-child {
 		}
 		return result.slice(0, result.length - 1);
 	}
-	
-	function getViewObject(viewObjectName) {
-		  var viewObjectConstructor = 'new ' + viewObjectName + '();';
-		
-			var evaluator = new GlideScopedEvaluator();
-	    var gr = new GlideRecord( 'x_276349_tryanderr_client');
-	    gr.get("clientid", "BMW");
-	    gr.setValue( 'headquarters', viewObjectConstructor);
-	    return evaluator.evaluateScript(gr, 'headquarters');
-	}
+
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
@@ -918,7 +839,7 @@ tbody tr:last-child {
         <sys_created_on>2019-04-16 09:08:25</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>26f1e25e4f3033003380a7d18110c7de</sys_id>
-        <sys_mod_count>108</sys_mod_count>
+        <sys_mod_count>169</sys_mod_count>
         <sys_name>MyEUD Generic Table</sys_name>
         <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
         <sys_policy/>
@@ -926,9 +847,10 @@ tbody tr:last-child {
         <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
         <sys_update_name>sp_widget_26f1e25e4f3033003380a7d18110c7de</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2019-04-23 12:21:26</sys_updated_on>
+        <sys_updated_on>2019-04-24 10:24:23</sys_updated_on>
         <template><![CDATA[<!--header-->
 <!-- <pre style="color:black">{{data|json}}</pre> -->
+
 <div>
   <sp-widget ng-if="c.data.showAlert" widget="c.data.alertWidget"></sp-widget>
 </div>
@@ -946,9 +868,6 @@ tbody tr:last-child {
     <span class="panel-title"><i ng-if="options.glyph" class="fa fa-{{options.glyph}} m-r"></i>{{data.title}}</span>
     <button name="new" role="link" class="btn btn-primary btn-sm m-l-xs" ng-click="newRecord()" ng-if="options.show_new && data.canCreate && !data.newButtonUnsupported" aria-label="${Create new record}">${New}</button> 
     <button name="clearFilter" class="btn btn-primary btn-sm m-l-xs" ng-click="clearFilter()" ng-if="data.enable_column_search">${Clear Filter}</button>
-   	<div ng-if="data.enable_filter" class="filter-breadcrumbs">
-	    <sp-widget widget="data.filterBreadcrumbs"></sp-widget>
-    </div>
     <div class="pull-right" ng-if="options.show_keywords">
       <form ng-submit="setSearch(true)">
         <div class="input-group">

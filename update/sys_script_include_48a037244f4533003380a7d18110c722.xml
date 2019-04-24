@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_276349_tryanderr.MurcsUtils</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>MurcsUtils</name>
+        <script><![CDATA[var MurcsUtils = Class.create();
+MurcsUtils.prototype = {
+    initialize: function() {
+    },
+
+	getViewObject: function(viewObjectName) {
+		var viewObjectConstructor = 'new ' + viewObjectName + '();';
+		var evaluator = new GlideScopedEvaluator();
+	    var gr = new GlideRecord( 'x_276349_tryanderr_murcsgenericobject');
+	    gr.get("name", "MURCS");
+	    gr.setValue( 'class', viewObjectConstructor);
+	    return evaluator.evaluateScript(gr, 'class');
+	},
+	
+    type: 'MurcsUtils'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2019-04-23 14:38:59</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>48a037244f4533003380a7d18110c722</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>MurcsUtils</sys_name>
+        <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
+        <sys_update_name>sys_script_include_48a037244f4533003380a7d18110c722</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2019-04-23 14:43:36</sys_updated_on>
+    </sys_script_include>
+</record_update>

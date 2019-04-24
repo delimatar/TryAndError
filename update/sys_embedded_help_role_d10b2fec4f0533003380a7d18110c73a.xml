@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_embedded_help_role">
+    <sys_embedded_help_role action="INSERT_OR_UPDATE">
+        <order>1000</order>
+        <role display_value="x_276349_tryanderr.genericobject_user" name="x_276349_tryanderr.genericobject_user">d90b2fec4f0533003380a7d18110c737</role>
+        <sys_class_name>sys_embedded_help_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2019-04-23 14:13:52</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>d10b2fec4f0533003380a7d18110c73a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>d90b2fec4f0533003380a7d18110c737</sys_name>
+        <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
+        <sys_update_name>sys_embedded_help_role_d10b2fec4f0533003380a7d18110c73a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2019-04-23 14:13:52</sys_updated_on>
+    </sys_embedded_help_role>
+</record_update>
