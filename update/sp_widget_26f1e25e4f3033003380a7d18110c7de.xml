@@ -3,20 +3,6 @@
         <category>custom</category>
         <client_script><![CDATA[function ($scope, $rootScope, $location, spUtil, amb, $http, spAriaUtil, $timeout, spNavStateManager, spModal) {
 	var c = this;
-	/*
-	 * options:
-	 * hide_footer (bool) = true to remove the data table footer contents
-	 * hide_header (bool) = true to remove the data table header contents
-	 * show_new (bool) = true to show the "New" record button
-	 * show_keywords (bool) = true to show the keyword search field
-	 * table (string) = the table name to query
-	 * filter (string) = the encoded query
-	 * o (string) = the order by column
-	 * d (string) = The order by direction: asc or desc
-	 * p (int) = the page to jump to
-	 * fields (string) = comma seperated list of fields that become the list columns
-	 * view (string) = the default view to load for columns, overrides fields
-	*/
 
 	$scope.exportTypes = [{label:'PDF', value: 'PDF'}, {label:'Excel', value:'EXCEL'}, {label:'CSV', value:'CSV'}];
 	var keys = ['table', 'filter', 'p', 'o', 'd'];
@@ -60,37 +46,7 @@
 		}).then(function(){
 		})		
 	}
-	
-	//add user (to project)
-	$scope.addUser = function(item) {
-		var shared = {};
-		spModal.open({
-			title: c.data.addUser_title,
-			widget: 'mp_project_user',
-			widgetInput: {sys_id: item.sys_id,
-										edit: false, view: false,
-										createMultiple: false, parentScope: $scope.$id},
-			shared: shared,
-			size: 'lg',
-			buttons: [{label: '${Cancel}', cancel: true}]
-		});
 
-		$rootScope.$on('addUsersToProject', function(event, parms){
-			if(parms.sys_id == item.sys_id){
-				showPaintsAlert('${mp.general.record_inserted}', 'success');
-				for(var obj in parms.selected) {
-					(function(user) {
-						$scope.checkForDuplicates(user, item.sys_id, function(duplicate) {
-							if(!duplicate) {
-								var variables = {contract: item.sys_id, user: user.sys_id, ismember: true};
-								$http.post("/api/now/table/x_bmwag_mypaints_mp_contract_user", variables);
-							}
-						});
-					})(parms.selected[obj]);
-				}
-			}
-		});
-	};
 
 	// checks if an entry already exists (and updates that record, if "ismember" is false)
 	$scope.checkForDuplicates = function(item, contract, callback) {
@@ -107,8 +63,6 @@
 			}
 		})
 	};
-
-
 
 	/*tell parent which instance_id this widget has
 	var widgetParms = {};
@@ -311,9 +265,9 @@
 						updateRowFromRW(message);
 						break;
 					case "exit":
-						// A record was removed
+						break;
 					case "enter":
-						// A record was added
+						break;
 					default:
 						spUtil.update($scope);
 						break;
@@ -614,169 +568,59 @@ tbody tr:last-child {
         <public>false</public>
         <roles/>
         <script><![CDATA[(function () {
+	
 	data.msg = {};
 	data.msg.sortingByAsc = gs.getMessage("Sorting by ascending");
 	data.msg.sortingByDesc = gs.getMessage("Sorting by descending");
 	
-	optCopy(['filter', 'p', 'o', 'd']);
-
 	if (!input) {
 		return;
 	}
 	
 	var murcsUtils = new x_276349_tryanderr.MurcsUtils();
-	var clientVO = murcsUtils.getViewObject(options.viewobject);
+	var viewObject = murcsUtils.getViewObject(options.viewobject);
 	
-	data.field_list = clientVO.getFieldList();
-  data.title = clientVO.getTitle();
-	data.view = clientVO.getViewName();
-	
-	data.table = "x_276349_tryanderr_client";
-
-	if (data.field_list) {
-		data.fields = data.field_list;
-	}
+	murcsUtils.copyInputToData(input, data, ['filter', 'p', 'o', 'd', 'searchObject']);
 
 	data.enable_column_search = true;
-	data.enable_edit_row = data.enable_edit_row || false;
-	data.enable_remove_row = data.enable_remove_row || false;
+	data.enable_edit_row = false;
+	data.enable_remove_row = false;
+	data.show_new = true;
+	data.canCreate = true;
+
+	data.title = viewObject.getTitle();
+
+	data.field_list = viewObject.getFields();
+	if (data.field_list) {
+		data.fields = data.field_list;
+		data.fields_array = data.fields.split(',');
+		gs.addInfoMessage(JSON.stringify(data.fields_array));
+	}
 	
-	data.p = data.p || $sp.getValue('p') || 1;
+	data.column_labels = viewObject.getLabels();
+  gs.addInfoMessage(JSON.stringify(data.column_labels));
+	
+	if (input.searchObject) {
+		data.querystring = murcsUtils.getEncodedQuery(input.searchObject, viewObject.getFieldTypes());
+	}
+
+  data.p = data.p || 1;
 	data.p = parseInt(data.p);
 	data.page_index = data.p - 1;
-	data.show_new = data.show_new || options.show_new || true;
-	var windowSize = data.window_size || $sp.getValue('maximum_entries') || 5;
-	windowSize = parseInt(windowSize);
-	if (isNaN(windowSize) || windowSize < 1)
-		windowSize = 20;
-	data.window_size = windowSize;
-	data.isClickable = [];
-
-	gr = new GlideRecord(data.table);
-	if (!gr.isValid()) {
-		data.invalid_table = true;
-		data.table_label = data.table;
-		return;
-	}
-
-	data.canCreate = gr.canCreate();
-	data.fields_array = data.fields.split(',');
-
 	
-	//get object with field names and types
-	data.field_type_object = {};
-	var grFields = new GlideRecord(data.table);
-	for (var k in data.fields_array) {
-		var fieldInstance = data.fields_array[k];
-		var label = grFields.getElement(fieldInstance).getLabel();
-		var name = grFields.getElement(fieldInstance).getName();
-		var fieldType = grFields.getElement(fieldInstance).getED().getInternalType();
-		data.field_type_object[fieldInstance] = { label: label, type: fieldType, name: name };
-	}
-
-	//Filter data by user input
-
-	if (input.searchObject) {
-		data.querystring = filterRecords(input.searchObject);
-		gr.addEncodedQuery(data.querystring);
-	}
-
-	if (input.removeRecord) {
-		var grRemove = new GlideRecord(data.table);
-		grRemove.get(input.recordID);
-		grRemove.deleteRecord();
-		data.recordRemoved = true;
-	}
-
-	if (data.o) {
-		if (data.d == "asc")
-			gr.orderBy(data.o);
-		else
-			gr.orderByDesc(data.o);
-	}
-
-	data.window_start = data.page_index * data.window_size;
-	data.window_end = (data.page_index + 1) * data.window_size;
-	gr.chooseWindow(data.window_start, data.window_end);
-	gr._query();
-
-	data.row_count = gr.getRowCount();
-	data.num_pages = Math.ceil(data.row_count / data.window_size);
-	data.column_labels = {};
-
-
-	data.column_labels['clientid'] = "Client";
-	data.column_labels['headquarters'] = "Headquarter";
-
+	var filterObject = {};
+	filterObject.query = data.querystring;
+	filterObject.orderBy = data.o;
+	filterObject.direction = data.d;
+	filterObject.pageIndex = data.page_index;
 	data.list = [];
-	while (gr._next()) {
-		var record = {};
-		$sp.getRecordElements(record, gr, data.fields);
-		record.sys_id = gr.getValue('sys_id');
-		data.list.push(record);
-	}
-
-	if (data.noRecords) {
-		data.list = [];
-		data.row_count = 0;
-		data.num_page = 0;
-	}
-
-	//build the final query string for the export function
-	data.exportFilter = buildExportFilter();
-
-	function buildExportFilter() {
-		queries = [];
-		if (data.filter) {
-			queries.push(data.filter);
-		}
-		if (data.querystring) {
-			queries.push(data.querystring);
-		}
-
-		return queries.join("^");
-	}
-
-	// copy to data from input or options
-	function optCopy(names) {
-		if (input) {
-			names.forEach(function (name) {
-				data[name] = input[name] || options[name];
-			});
-		} else {
-			names.forEach(function (name) {
-				data[name] = options[name];
-			});
-		}
-	}
-	// create queries for searchObject, only strings and booleans atm
-	function filterRecords(searchObject) {
-		var result = '';
-		for (var col in searchObject) {
-			if (data.field_type_object[col].type === 'boolean') {
-				result += col + '=' + searchObject[col] + '^';
-			}
-			if (data.field_type_object[col].type === 'string') {
-				result += col + 'LIKE' + searchObject[col] + '^';
-			}
-			if (data.field_type_object[col].type === 'string_full_utf8') {
-				result += col + 'LIKE' + searchObject[col] + '^';
-			}
-			if (data.field_type_object[col].type === 'integer') {
-				result += col + '=' + searchObject[col] + '^';
-			}
-			/*
-			if (data.field_type_object[col].type === 'translated_field') {
-				var value = helperAPI.queryFor(data.table, col, searchObject[col]);
-				result += col + '=' + value + '^';
-			}
-			*/
-			if (data.field_type_object[col].type === 'reference') {
-				result += col + 'LIKE' + searchObject[col] + '^';
-			}
-		}
-		return result.slice(0, result.length - 1);
-	}
+	
+	var result = viewObject.getList(filterObject);
+	data.list = result.list;
+	
+	data.row_count = result.rowCount;
+	data.num_pages = result.numPages;
+	data.message = result.message;
 
 })();]]></script>
         <servicenow>false</servicenow>
@@ -785,7 +629,7 @@ tbody tr:last-child {
         <sys_created_on>2019-04-16 09:08:25</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>26f1e25e4f3033003380a7d18110c7de</sys_id>
-        <sys_mod_count>196</sys_mod_count>
+        <sys_mod_count>305</sys_mod_count>
         <sys_name>MyEUD Generic Table</sys_name>
         <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
         <sys_policy/>
@@ -793,7 +637,7 @@ tbody tr:last-child {
         <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
         <sys_update_name>sp_widget_26f1e25e4f3033003380a7d18110c7de</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2019-04-24 16:06:59</sys_updated_on>
+        <sys_updated_on>2019-04-30 08:08:16</sys_updated_on>
         <template><![CDATA[<!--header-->
 <!-- <pre style="color:black">{{data|json}}</pre> -->
 
@@ -805,15 +649,18 @@ tbody tr:last-child {
   <div class="panel-heading form-inline" ng-hide="options.hide_header">
     <span class="dropdown m-r-xs">
       <button aria-label="${Table menu}" class="btn dropdown-toggle glyphicon glyphicon-menu-hamburger" style="line-height: 1.4em" id="optionsMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+      <!--
       <ul class="dropdown-menu" aria-labelledby="optionsMenu">
         <li ng-repeat="t in ::exportTypes">
           <a ng-href="/{{data.table}}_list.do?{{::t.value}}&sysparm_query={{data.exportFilter}}&sysparm_view={{data.view}}&sysparm_fields={{data.fields}}" target="_new">${Export as} {{::t.label}}</a>
         </li>
       </ul>
+      -->
     </span>
     <span class="panel-title"><i ng-if="options.glyph" class="fa fa-{{options.glyph}} m-r"></i>{{data.title}}</span>
     <button name="new" role="link" class="btn btn-primary btn-sm m-l-xs" ng-click="newRecord()" ng-if="options.show_new && data.canCreate && !data.newButtonUnsupported" aria-label="${Create new record}">${New}</button> 
     <button name="clearFilter" class="btn btn-primary btn-sm m-l-xs" ng-click="clearFilter()" ng-if="data.enable_column_search">${Clear Filter}</button>
+    <!--
     <div class="pull-right" ng-if="options.show_keywords">
       <form ng-submit="setSearch(true)">
         <div class="input-group">
@@ -824,6 +671,7 @@ tbody tr:last-child {
         </div>
       </form>
     </div>
+		-->
     <div class="clearfix"></div>
   </div>
   <!-- body -->
@@ -839,11 +687,16 @@ tbody tr:last-child {
       <thead>
         <tr>
           <th class="sr-only"></th>
+          <!--
           <th ng-repeat="field in data.fields_array track by $index" ng-click="setOrderBy(field)" tabindex="0">
             <div class="th-title" aria-label="${Sort by } {{data.column_labels[field]}}">{{data.column_labels[field]}}</div>
             <i class="fa" ng-if="field == data.o" ng-class="{'asc': 'fa-chevron-up', 'desc': 'fa-chevron-down'}[data.d]" aria-label="${Sorted by } {{data.column_labels[field]}} {{data.d == 'asc' ?  '${Ascending}': '${Descending}' }}"></i>
           </th>
-          <th ng-if="data.enable_add_user"></th>
+          -->
+          <th ng-repeat="field in data.fields_array track by $index" ng-click="setOrderBy(field)" tabindex="0">
+            <div class="th-title" >{{data.column_labels[field]}}</div>
+            <i class="fa" ng-if="field == data.o" ng-class="{'asc': 'fa-chevron-up', 'desc': 'fa-chevron-down'}[data.d]" ></i>
+          </th>
           <th ng-if="data.enable_details"></th>
           <th ng-if="data.enable_edit_row"><div class="th-title">${Edit}</div></th>
           <th ng-if="data.enable_remove_row"><div class="th-title">${Remove}</div></th>
@@ -857,24 +710,23 @@ tbody tr:last-child {
               <div class="input-group">
                 <input type="text" ng-model="data.searchObject[field]" ng-model-options="{debounce:250}" class="form-control" placeholder="${Search}">
                 <span class="input-group-btn">
-                  <button name="search" class="btn btn-default" type="submit" aria-label="${Search}"><span class="glyphicon glyphicon-search"></span></button>
+                  <button name="search" class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-search"></span></button>
                 </span>
               </div>
             </form>
           </td>
         </tr>
         <tr ng-repeat="item in data.list track by item.sys_id">
-          <td class="sr-only" tabindex="0" role="link" ng-click="go(data.table, item)" aria-label="${Open record}"></td>
-          <td role="text" aria-label="{{item[field].display_value}}" class="pointer" ng-class="{selected: item.selected}" ng-click="go(data.table, item)" ng-repeat="field in ::data.fields_array track by $index" data-field="{{::field}}" data-th="{{::data.column_labels[field]}}">
+          <td class="sr-only" tabindex="0" role="link" ng-click="go(data.table, item)" ></td>
+          <td role="text" class="pointer" ng-class="{selected: item.selected}" ng-click="go(data.table, item)" ng-repeat="field in ::data.fields_array track by $index" data-field="{{::field}}" data-th="{{::data.column_labels[field]}}">
             <a ng-if="data.isClickable[$index]" ng-click="c.detailForEntry(item, field)">{{item[field].display_value}}</a>
             <div ng-if="!data.isClickable[$index]">
               {{item[field].display_value}}
             </div>
           </td>
-          <td ng-if="data.enable_add_user"><button name="add User" class="btn btn-primary" ng-click="addUser(item)" aria-label="${Add User}"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-plus"></span></button></td>
           <td ng-if="data.enable_details"><a href ng-click="goToDetails(item)">Details</a></td>
-          <td ng-if="data.enable_edit_row"><button name="edit Record" class="btn btn-primary" ng-click="editRecord(item)" aria-label="${Edit}"><span class="glyphicon glyphicon-pencil"></span></button></td>
-          <td ng-if="data.enable_remove_row"><button name="remove Record" class="btn btn-primary" ng-click="removeRecord(item)" aria-label="${Remove}"><span class="glyphicon glyphicon-trash"></span></button></td>
+          <td ng-if="data.enable_edit_row"><button name="edit Record" class="btn btn-primary" ng-click="editRecord(item)"><span class="glyphicon glyphicon-pencil"></span></button></td>
+          <td ng-if="data.enable_remove_row"><button name="remove Record" class="btn btn-primary" ng-click="removeRecord(item)"><span class="glyphicon glyphicon-trash"></span></button></td>
         </tr>
       </tbody>
     </table>
@@ -888,18 +740,17 @@ tbody tr:last-child {
     <div class="btn-toolbar m-r pull-left">
       <div ng-if="data.num_pages > 1">
         <div class="btn-group">
-          <a ng-disabled="data.p == 1" href="javascript:void(0)" ng-click="setPageNum(data.p - 1)" class="btn btn-default"  aria-label="${Previous page}"><i class="fa fa-chevron-left"></i></a>
+          <a ng-disabled="data.p == 1" href="javascript:void(0)" ng-click="setPageNum(data.p - 1)" class="btn btn-default"><i class="fa fa-chevron-left"></i></a>
         </div>
         <div ng-if="data.num_pages > 1 && data.num_pages < 20" class="btn-group">
-          <a ng-repeat="i in getNumber(data.num_pages) track by $index" ng-click="setPageNum($index + 1)" href="javascript:void(0)" ng-class="{active: ($index + 1) == data.p}" type="button" class="btn btn-default" aria-label="${Page} {{$index + 1}}">{{$index + 1}}</a>
+          <a ng-repeat="i in getNumber(data.num_pages) track by $index" ng-click="setPageNum($index + 1)" href="javascript:void(0)" ng-class="{active: ($index + 1) == data.p}" type="button" class="btn btn-default">{{$index + 1}}</a>
         </div>
         <div class="btn-group">
-          <a ng-disabled="data.p == data.num_pages" href="javascript:void(0)" ng-click="setPageNum(data.p + 1)" class="btn btn-default" aria-label="${Next page}"><i class="fa fa-chevron-right"></i></a>
+          <a ng-disabled="data.p == data.num_pages" href="javascript:void(0)" ng-click="setPageNum(data.p + 1)" class="btn btn-default"><i class="fa fa-chevron-right"></i></a>
         </div>
       </div>
     </div>
-    <div class="m-t-xs panel-title">${Rows {{data.window_start + 1}} - {{ mathMin(data.window_end,data.row_count) }} of {{data.row_count}}}</div>
-
+		<div class="m-t-xs panel-title">{{data.message}}</div>
     <span class="clearfix"></span>
   </div>
 </div>]]></template>

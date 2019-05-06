@@ -2,13 +2,13 @@
     <sys_script_include action="INSERT_OR_UPDATE">
         <access>package_private</access>
         <active>true</active>
-        <api_name>x_276349_tryanderr.ClientVO</api_name>
+        <api_name>x_276349_tryanderr.CompanyVO</api_name>
         <client_callable>false</client_callable>
-        <description>This object represents the view object</description>
-        <name>ClientVO</name>
-        <script><![CDATA[var ClientVO = Class.create();
-ClientVO.prototype = {
-	fields : "clientid,headquarters",
+        <description/>
+        <name>CompanyVO</name>
+        <script><![CDATA[var CompanyVO = Class.create();
+CompanyVO.prototype = {
+	fields : "client.clientid,company,city",
 	windowSize : 4,
     initialize: function() {
     },
@@ -26,26 +26,28 @@ ClientVO.prototype = {
 	},
 		
 	getTitle: function() {
-		return "List of Clients";
+		return "List of Companies";
 	},
 	
 	getLabels: function() {
 		var labels = {};
 		labels.clientid = "Client";
-		labels.headquarters = "Headquarter";
+		labels.company = "Company";
+		labels.city = "City";
 		return labels;
 	},
 	
 	getFieldTypes: function() {
 		var field_types = {};
-		field_types.clientid = { label: 'Client', type: 'string_full_utf8', name: 'clientid' };
-		field_types.headquarters = { label: 'Headquarter', type: 'string_full_utf8', name: 'headquarters' };
+		field_types.clientid = { label: 'Client', type: 'string', name: 'client.clientid', order : 1};
+		field_types.company = { label: 'Company', type: 'string', name: 'company', order : 2 };
+		field_types.city = { label: 'City', type: 'string', name: 'city', order : 3 };
 		return field_types;
 	},
 	
 	getList: function(filterObject) {
 		var result = {};
-		var table = "x_276349_tryanderr_client";
+		var table = "x_276349_tryanderr_company";
 		var list = [];
 		var gr = new GlideRecord(table);
 		if(filterObject.query) {
@@ -84,21 +86,21 @@ ClientVO.prototype = {
 		return result;
 	},
 	
-    type: 'ClientVO'
+    type: 'CompanyVO'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>admin</sys_created_by>
-        <sys_created_on>2019-04-23 07:25:45</sys_created_on>
+        <sys_created_on>2019-04-28 11:32:26</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
-        <sys_id>8c5dca644f0133003380a7d18110c7cd</sys_id>
-        <sys_mod_count>50</sys_mod_count>
-        <sys_name>ClientVO</sys_name>
+        <sys_id>a4c574524fc537003380a7d18110c722</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>CompanyVO</sys_name>
         <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
         <sys_policy>read</sys_policy>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
-        <sys_update_name>sys_script_include_8c5dca644f0133003380a7d18110c7cd</sys_update_name>
+        <sys_update_name>sys_script_include_a4c574524fc537003380a7d18110c722</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2019-04-28 08:26:21</sys_updated_on>
+        <sys_updated_on>2019-04-29 07:31:06</sys_updated_on>
     </sys_script_include>
 </record_update>

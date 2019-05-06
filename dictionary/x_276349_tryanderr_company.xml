@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Company" max_length="40" name="x_276349_tryanderr_company" type="collection">
+        <element label="City" max_length="40" name="city" type="string"/>
+        <element label="Client" max_length="32" name="client" reference="x_276349_tryanderr_client" type="reference"/>
+        <element label="Company" max_length="40" name="company" type="string"/>
+        <index name="index">
+            <element name="client"/>
+        </index>
+    </element>
+</database>
