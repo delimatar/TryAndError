@@ -100,9 +100,10 @@
 
 	//redirect to Details page
 	$scope.goToDetails = function(record){
-		var page = c.data.details_page;
-		var sys_id = record.sys_id;
-		$location.search({id: page, sys_id: sys_id});
+		$rootScope.$emit('selectedItem', record);
+//		var page = c.data.details_page;
+//		var sys_id = record.sys_id;
+//		$location.search({id: page, sys_id: sys_id});
 	}
 
 	//show paints alert if record has been edited or inserted in modal
@@ -459,15 +460,7 @@
 		return eq;
 	}
 	c.detailForEntry = function(item, field) {
-		spModal.open({
-			title: 'Details',
-			widget: 'mp_edit_form_widget',
-			widgetInput: {table: c.data.references[field], sys_id: item[field].value,
-										edit: false, view: c.data.formViews[field], hideAlert: true,
-										createMultiple: false, parentScope: $scope.$id, setReadOnly: true},
-			buttons: [{label: 'Close', cancel: true}]
-		}).then(function(){
-		})		
+			$rootScope.$emit('selectedItem', item);
 	}
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -585,8 +578,10 @@ tbody tr:last-child {
 	data.enable_column_search = true;
 	data.enable_edit_row = false;
 	data.enable_remove_row = false;
+	data.enable_details = false;
 	data.show_new = true;
 	data.canCreate = true;
+	data.isClickable = true;
 
 	data.title = viewObject.getTitle();
 
@@ -594,11 +589,11 @@ tbody tr:last-child {
 	if (data.field_list) {
 		data.fields = data.field_list;
 		data.fields_array = data.fields.split(',');
-		gs.addInfoMessage(JSON.stringify(data.fields_array));
+		//gs.addInfoMessage(JSON.stringify(data.fields_array));
 	}
 	
 	data.column_labels = viewObject.getLabels();
-  gs.addInfoMessage(JSON.stringify(data.column_labels));
+  //gs.addInfoMessage(JSON.stringify(data.column_labels));
 	
 	if (input.searchObject) {
 		data.querystring = murcsUtils.getEncodedQuery(input.searchObject, viewObject.getFieldTypes());
@@ -629,7 +624,7 @@ tbody tr:last-child {
         <sys_created_on>2019-04-16 09:08:25</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>26f1e25e4f3033003380a7d18110c7de</sys_id>
-        <sys_mod_count>305</sys_mod_count>
+        <sys_mod_count>327</sys_mod_count>
         <sys_name>MyEUD Generic Table</sys_name>
         <sys_package display_value="TryAndError" source="x_276349_tryanderr">16e78fcd4f9d23003380a7d18110c73d</sys_package>
         <sys_policy/>
@@ -637,10 +632,9 @@ tbody tr:last-child {
         <sys_scope display_value="TryAndError">16e78fcd4f9d23003380a7d18110c73d</sys_scope>
         <sys_update_name>sp_widget_26f1e25e4f3033003380a7d18110c7de</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2019-04-30 08:08:16</sys_updated_on>
+        <sys_updated_on>2019-05-27 13:55:22</sys_updated_on>
         <template><![CDATA[<!--header-->
 <!-- <pre style="color:black">{{data|json}}</pre> -->
-
 <div>
   <sp-widget ng-if="c.data.showAlert" widget="c.data.alertWidget"></sp-widget>
 </div>
@@ -716,7 +710,7 @@ tbody tr:last-child {
             </form>
           </td>
         </tr>
-        <tr ng-repeat="item in data.list track by item.sys_id">
+        <tr ng-repeat="item in data.list track by item.sys_id" ng-click="c.detailForEntry(item)">
           <td class="sr-only" tabindex="0" role="link" ng-click="go(data.table, item)" ></td>
           <td role="text" class="pointer" ng-class="{selected: item.selected}" ng-click="go(data.table, item)" ng-repeat="field in ::data.fields_array track by $index" data-field="{{::field}}" data-th="{{::data.column_labels[field]}}">
             <a ng-if="data.isClickable[$index]" ng-click="c.detailForEntry(item, field)">{{item[field].display_value}}</a>
@@ -752,6 +746,7 @@ tbody tr:last-child {
     </div>
 		<div class="m-t-xs panel-title">{{data.message}}</div>
     <span class="clearfix"></span>
+  </div>
   </div>
 </div>]]></template>
     </sp_widget>
